@@ -1,0 +1,69 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "typings",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "node/node.d.ts": {
+      "commit": "69de0f48cdad23c179d05919ab77d6734fe0ed2e"
+    },
+    "express/express.d.ts": {
+      "commit": "69de0f48cdad23c179d05919ab77d6734fe0ed2e"
+    },
+    "serve-static/serve-static.d.ts": {
+      "commit": "69de0f48cdad23c179d05919ab77d6734fe0ed2e"
+    },
+    "express-serve-static-core/express-serve-static-core.d.ts": {
+      "commit": "69de0f48cdad23c179d05919ab77d6734fe0ed2e"
+    },
+    "mime/mime.d.ts": {
+      "commit": "69de0f48cdad23c179d05919ab77d6734fe0ed2e"
+    },
+    "mocha/mocha.d.ts": {
+      "commit": "c7ecdeada9b34b9b61f0a2643d78297f087c552f"
+    },
+    "chai/chai.d.ts": {
+      "commit": "7ce2630b07ef481d6c5f262dcafe9c9e2feec446"
+    },
+    "assertion-error/assertion-error.d.ts": {
+      "commit": "7ce2630b07ef481d6c5f262dcafe9c9e2feec446"
+    },
+    "body-parser/body-parser.d.ts": {
+      "commit": "c1e990eae001c7100357295e767fbbe9d73f3087"
+    },
+    "connect-timeout/connect-timeout.d.ts": {
+      "commit": "c1e990eae001c7100357295e767fbbe9d73f3087"
+    },
+    "cookie-parser/cookie-parser.d.ts": {
+      "commit": "c1e990eae001c7100357295e767fbbe9d73f3087"
+    },
+    "consolidate/consolidate.d.ts": {
+      "commit": "3e7c0892c1bb8c108c0b2caf831bd503cbe6b34b"
+    },
+    "compression/compression.d.ts": {
+      "commit": "b09e0bd1d943355448f509aa1a602dfe290dbd3e"
+    },
+    "supertest/supertest.d.ts": {
+      "commit": "b66d6115d7a8cd74af45e59d36c4447e5d1e9a52"
+    },
+    "superagent/superagent.d.ts": {
+      "commit": "b66d6115d7a8cd74af45e59d36c4447e5d1e9a52"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "b66d6115d7a8cd74af45e59d36c4447e5d1e9a52"
+    },
+    "bootstrap/bootstrap.d.ts": {
+      "commit": "5ccabc86eca6cfcda2b7ec83cca31dbd07c8a31b"
+    },
+    "jquery/jquery.d.ts": {
+      "commit": "5ccabc86eca6cfcda2b7ec83cca31dbd07c8a31b"
+    },
+    "socket.io/socket.io.d.ts": {
+      "commit": "8f544e7fc6fce893f85474e04e9cd1dcb601039e"
+    },
+		"github-electron/github-electron.d.ts": {
+      "commit": "c42b2ba16cc7f06869be1934ae829861296c2323"
+    }
+  }
+}

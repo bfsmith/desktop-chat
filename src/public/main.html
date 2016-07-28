@@ -1,0 +1,13 @@
+<h1>Chat App</h1>
+<div class="row">
+<div class="col-xs-2 user-list">
+	<h1>Users</h1>
+	<user-list></user-list>
+	<a routerLink="/messages/1" routerLinkActive="active">Message 1</a><br />
+	<a routerLink="/messages/2" routerLinkActive="active">Message 2</a>
+</div>
+<div class="col-xs-10 chat-log">
+	<router-outlet></router-outlet>
+	<!--<message-list></message-list>-->
+</div>
+<div class="clear"></div>

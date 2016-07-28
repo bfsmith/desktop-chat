@@ -1,0 +1,1 @@
+This project is intended to be a desktop chat app that uses socket.io for its communications.

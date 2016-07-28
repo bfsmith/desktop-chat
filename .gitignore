@@ -1,0 +1,8 @@
+node_modules
+typings
+.tscache
+build
+**/*.log
+.vscode
+.bowerrc
+.tsdrc

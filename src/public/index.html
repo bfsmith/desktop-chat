@@ -1,0 +1,50 @@
+<html>
+
+<head>
+	<base href="/" />
+	<style>
+		html {
+			height: 100%;
+		}
+		
+		body {
+			height: 100%;
+			margin: 0;
+		}
+		
+		.clear {
+			clear: both;
+		}
+	</style>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+	<!-- 1. Load libraries -->
+	<!-- Polyfill(s) for older browsers -->
+	<script src="/node_modules/core-js/client/shim.min.js"></script>
+	<script src="/node_modules/zone.js/dist/zone.js"></script>
+	<script src="/node_modules/reflect-metadata/Reflect.js"></script>
+	<script src="/node_modules/systemjs/dist/system.src.js"></script>
+	<!-- 2. Configure SystemJS -->
+	<script src="/systemjs.config.js"></script>
+	<script>
+      System.import('app').catch(function(err){ console.error(err); });
+    </script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+		var socket = io('http://localhost:3000');
+		socket.emit('register', {name: "Blargh"}, function (resp) {
+			console.log("Response: ", resp);
+		});
+	</script>
+	<!--<script src="/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>-->
+</head>
+
+<body>
+	<chat-app>Loading</chat-app>
+	
+	<script type="text/javascript" src="http://localhost:35729/"></script>
+</body>
+
+</html>

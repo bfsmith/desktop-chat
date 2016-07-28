@@ -1,0 +1,12 @@
+<h1>MESSAGE LIST</h1>
+<div *ngIf="conversation">
+	<div *ngFor="let message of conversation.getMessages()" class="col-xs-12">
+		<div class="message">
+			<h4>{{message.getUser().getName()}}: {{message.getMessage()}}</h4>
+		</div>
+	</div>
+
+	<div>
+		<button (click)="addMessage()">Add Message</button>
+	</div>
+</div>

@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "allowJs": false,
+        "target": "es6",
+        "sourceMap": true,
+        "module": "commonjs",
+        "allowSyntheticDefaultImports": false,
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "removeComments": false,
+        "noImplicitAny": false,
+        "noImplicitReturns": true,
+        "outDir": "build",
+        "rootDir": "src",
+        "noEmitOnError": true,
+        "declaration": false
+    },
+    "compileOnSave": true,
+    "exclude": [
+        "node_modules",
+        "build"
+    ]
+}
