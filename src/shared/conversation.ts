@@ -12,9 +12,7 @@ export class Conversation {
 			this.userMap[user.getId()] = user;
 		});
 		if (messages) {
-			messages.forEach(message => {
-				this.addMessage(message)
-			});
+			messages.forEach(message => this.addMessage(message));
 		}
 	}
 
@@ -37,13 +35,13 @@ export class Conversation {
 		this.messages.push(um);
 	}
 
-	public fromPojo(pojo: any): Conversation {
+	public static FROM_POJO(pojo: any): Conversation {
 		if (pojo.id !== undefined
 				&& pojo.users !== undefined && Array.isArray(pojo.users)
 				&& pojo.messages !== undefined && Array.isArray(pojo.messages)) {
-			let users: User[] = pojo.users.map(user => User.fromPojo(user));
+			let users: User[] = pojo.users.map(user => User.FROM_POJO(user));
 			let messages: Message[] = pojo.messages !== undefined && Array.isArray(pojo.messages)
-				? pojo.messages.map(message => Message.fromPojo(message))
+				? pojo.messages.map(message => Message.FROM_POJO(message))
 				: undefined;
 			return new Conversation(pojo.id, users, messages);
 		}

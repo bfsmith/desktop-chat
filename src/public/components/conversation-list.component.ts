@@ -5,23 +5,22 @@ import { AppContextService } from '../services/app-context.service';
 import { ConversationService } from '../services/conversation.service';
 import { UserService } from '../services/user.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
 	moduleId: module.id,
-	selector: 'user-list',
+	selector: 'conversation-list',
 	// styleUrls: ['user-list.component.css'],
 	templateUrl: 'conversation-list.component.html',
 })
 export class ConversationListComponent implements OnInit, OnDestroy {
 	public conversations: Conversation[];
-	private sub: any;
 
 	constructor(
 		private appContextService: AppContextService,
 		private conversationService: ConversationService,
-		private route: ActivatedRoute) {
-			this.conversations = conversationService.getConversations();
+		private route: ActivatedRoute,
+		private router: Router) {
 	}
 
 	public getOtherUsers(conversation: Conversation): User[] {
@@ -35,11 +34,15 @@ export class ConversationListComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit() {
-		
+		this.conversations = this.conversationService.getConversations();
 	}
 
 	public ngOnDestroy(){
-		this.sub.unsubscribe();
+	}
+
+	public gotoConversation(conversationId: string): void {
+		let link = ['/conversation', conversationId];
+		this.router.navigate(link);
 	}
 }
 

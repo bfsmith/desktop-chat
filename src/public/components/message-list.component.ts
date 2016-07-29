@@ -15,11 +15,20 @@ import { ActivatedRoute } from '@angular/router';
 export class MessageListComponent implements OnInit, OnDestroy {
 	@Input()
 	public conversation: Conversation;
+	private message: string;
 	private sub: any;
 
 	constructor(
 		private conversationService: ConversationService,
 		private route: ActivatedRoute) {
+	}
+
+	public sendMessage() {
+		this.conversationService.addMessage(this.conversation.getId(), this.message)
+			.then(() => {
+				this.message = '';
+			})
+			.catch(console.error.bind(console));
 	}
 
 	public addMessage() {
@@ -30,20 +39,22 @@ export class MessageListComponent implements OnInit, OnDestroy {
 
 	public ngOnInit() {
 		this.sub = this.route.params.subscribe(params => {
-			if(params['conversationId'] !== undefined){
+			if (params['conversationId'] !== undefined) {
 				let id: string = params['conversationId'];
 				this.conversationService.getConversation(id)
 					.then(conversation => {
-						this.conversation = conversation
+						this.conversation = conversation;
+						this.message = '';
 					})
 					.catch(console.error.bind(console));
 			} else {
 				this.conversation = null;
+				this.message = '';
 			}
 		});
 	}
 
-	public ngOnDestroy(){
+	public ngOnDestroy() {
 		this.sub.unsubscribe();
 	}
 }

@@ -1,0 +1,14 @@
+.user {
+	cursor: pointer;
+}
+
+.user a:hover {
+	text-decoration: none;
+}
+
+.online {
+	color: #090;
+}
+.offline {
+	color: #a00;
+}

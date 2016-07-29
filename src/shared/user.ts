@@ -28,13 +28,15 @@ export class User {
 		this.status = status;
 	}
 
-	public static fromPojo(pojo: any): User {
+	public static FROM_POJO(pojo: any): User {
 		if (pojo.id !== undefined
 				&& pojo.name !== undefined
 				&& pojo.status !== undefined) {
 			let u = new User(pojo.id);
 			u.setName(pojo.name);
-			u.setStatus(pojo.status || Status.Online);
+			u.setStatus(pojo.status !== undefined
+				? pojo.status
+				: Status.Online);
 			return u;
 		}
 		throw new Error("Pojo could not be converted to a User. " + pojo);

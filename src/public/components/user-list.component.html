@@ -1,5 +1,6 @@
+<h1>Users</h1>
 <div *ngFor="let user of users" class="col-1-4">
 	<div class="user">
-		<h4>{{user.name}}</h4>
+		<a (click)="startConversation(user)"><h4 [class.online]="user.status" [class.offline]="!user.status">{{user.name}}</h4></a>
 	</div>
 </div>

@@ -1,13 +1,19 @@
-<h1>Chat App</h1>
-<div class="row">
-<div class="col-xs-2 user-list">
-	<h1>Users</h1>
-	<user-list></user-list>
-	<a routerLink="/messages/1" routerLinkActive="active">Message 1</a><br />
-	<a routerLink="/messages/2" routerLinkActive="active">Message 2</a>
+<!--<div *ngIf="!user">
+	<register></register>
+</div>-->
+
+<div>
+	<div *ngIf="user">You are {{user.getName()}}</div>
+	<div class="row">
+		<div class="col-xs-2 user-list">
+			<user-list></user-list>
+		</div>
+		<div class="col-xs-2 user-list">
+			<conversation-list></conversation-list>
+		</div>
+		<div class="col-xs-8 chat-log">
+			<router-outlet></router-outlet>
+		</div>
+		<div class="clear"></div>
+	</div>
 </div>
-<div class="col-xs-10 chat-log">
-	<router-outlet></router-outlet>
-	<!--<message-list></message-list>-->
-</div>
-<div class="clear"></div>

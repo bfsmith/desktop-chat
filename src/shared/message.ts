@@ -16,7 +16,7 @@ export class Message {
 		return this.createdDate;
 	}
 
-	public static fromPojo(pojo: any): Message {
+	public static FROM_POJO(pojo: any): Message {
 		if (pojo.conversationId !== undefined
 			&& pojo.fromUserId !== undefined
 			&& pojo.message !== undefined) {

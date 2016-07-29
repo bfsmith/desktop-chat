@@ -62,8 +62,23 @@
     "socket.io/socket.io.d.ts": {
       "commit": "8f544e7fc6fce893f85474e04e9cd1dcb601039e"
     },
-		"github-electron/github-electron.d.ts": {
+    "github-electron/github-electron.d.ts": {
       "commit": "c42b2ba16cc7f06869be1934ae829861296c2323"
+    },
+    "socket.io-client/socket.io-client.d.ts": {
+      "commit": "2864d4666436b055aea2e46f53d5ee6bbabcba55"
+    },
+    "node-uuid/node-uuid.d.ts": {
+      "commit": "2864d4666436b055aea2e46f53d5ee6bbabcba55"
+    },
+    "node-uuid/node-uuid-base.d.ts": {
+      "commit": "2864d4666436b055aea2e46f53d5ee6bbabcba55"
+    },
+    "node-uuid/node-uuid-cjs.d.ts": {
+      "commit": "2864d4666436b055aea2e46f53d5ee6bbabcba55"
+    },
+    "lodash/lodash.d.ts": {
+      "commit": "46ed88240c5954186ae49729ad740801d1825a35"
     }
   }
 }

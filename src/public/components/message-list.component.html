@@ -1,4 +1,4 @@
-<h1>MESSAGE LIST</h1>
+<h1>Message</h1>
 <div *ngIf="conversation">
 	<div *ngFor="let message of conversation.getMessages()" class="col-xs-12">
 		<div class="message">
@@ -7,6 +7,7 @@
 	</div>
 
 	<div>
-		<button (click)="addMessage()">Add Message</button>
+		<input type="text" [(ngModel)]="message" placeholder="message" />
+		<button (click)="sendMessage()">Send</button>
 	</div>
 </div>

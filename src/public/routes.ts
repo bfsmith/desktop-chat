@@ -3,7 +3,7 @@ import { RouterConfig, provideRouter }	from '@angular/router';
 
 const routes: RouterConfig = [
 	{
-		path: 'messages/:conversationId',
+		path: 'conversation/:conversationId',
 		component: MessageListComponent
 	},
 ];
