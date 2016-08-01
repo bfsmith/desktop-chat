@@ -25,6 +25,9 @@ export class Conversation {
 	public getMessages(): UserMessage[] {
 		return this.messages;
 	}
+	public isGroupConversation(): boolean {
+		return this.getUsers().length > 2;
+	}
 
 	public addMessage(message: Message) {
 		let user = this.userMap[message.getUserId()];

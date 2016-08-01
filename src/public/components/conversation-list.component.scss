@@ -1,0 +1,42 @@
+@import '../styles/variables.scss';
+
+.header {
+	height: 45px;
+	padding: 4px 0;
+
+	.btn {
+		width: 100%;
+	}
+}
+
+.conversations {
+	overflow-x: hidden;
+	overflow-y: auto;
+	margin-left: 0;
+	margin-right: 0;
+
+
+	.conversation {
+		cursor: pointer;
+		padding: 10px 0;
+
+		// &:hover {
+		// 	background: $gray-85;
+		// }
+
+		&.active {
+			background: #49f;
+		}
+
+		.user-badge {
+			background: $gray-70;
+			border-radius: 24px;
+			color: $gray-95;
+			display: inline-block;
+			font-size: 12pt;
+			height: 48px;
+			padding: 13px;
+			width: 48px;
+		}
+	}
+}

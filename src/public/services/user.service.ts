@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 export class UserService {
 	public users: User[] = [];
 
-	constructor(appContext: AppContextService, socketService: SocketService) {
+	constructor(private appContext: AppContextService, socketService: SocketService) {
 		socketService.users.subscribe(user => {
 			if (!appContext.isCurrentUser(user)) {
 				// if (user.getStatus() === Status.Offline) {
@@ -29,5 +29,30 @@ export class UserService {
 		},
 			error => console.error.bind(error),
 			() => { /* Complete */ });
+	}
+
+	public abbreviateUsername(user: User): string {
+		let abbreviation = '';
+		let name = user.getName();
+		let words = name.trim().split(' ');
+		words.forEach(word => {
+			let matches = name.match(/([A-Z])/);
+			if (matches && matches.length > 0) {
+				abbreviation += matches[0];
+			} else {
+				matches = name.match(/([a-z])/);
+				if (matches && matches.length > 0) {
+					abbreviation += matches[0];
+				} else {
+					abbreviation += word.charAt(0);
+				}
+			}
+		});
+
+		return abbreviation;
+	}
+
+	public filterCurrentUser(users: User[]) {
+		return users.filter(u => !this.appContext.isCurrentUser(u));
 	}
 }

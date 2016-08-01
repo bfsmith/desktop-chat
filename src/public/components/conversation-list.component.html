@@ -1,6 +1,19 @@
-<h1>Conversations</h1>
-<div *ngFor="let conversation of conversations" class="col-xs-12">
-	<div class="conversation">
-		<a (click)="gotoConversation(conversation)"><h4><span *ngFor="let user of getOtherUsers(conversation)">{{user.getName()}}</span></h4></a>
+<div *ngIf="conversations">
+	<div class="row header">
+		<div class="col-xs-12">
+			<a class="btn btn-primary">New Conversation</a>
+		</div>
+	</div>
+	<div class="row conversations">
+		<div class="col-xs-12 ">
+			<ul class="list-unstyled">
+				<li *ngFor="let conversation of conversations" class="row conversation" (click)="gotoConversation(conversation)" [class.active]="isActive(conversation)">
+					<div class="col-xs-3"><span class="user-badge">AB</span></div>
+					<div class="col-xs-9">
+						<h4><span *ngFor="let user of getOtherUsers(conversation)">{{user.getName()}}</span></h4>
+					</div>
+				</li>
+			</ul>
+		</div>
 	</div>
 </div>

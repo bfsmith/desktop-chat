@@ -11,11 +11,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 	moduleId: module.id,
 	properties: ['conversation'],
 	selector: 'conversation-list',
-	// styleUrls: ['conversation-list.component.css'],
+	styleUrls: ['conversation-list.component.css'],
 	templateUrl: 'conversation-list.component.html',
 })
 export class ConversationListComponent implements OnInit, OnDestroy {
-	public conversation: Conversation;
+	public activeConversation: Conversation;
 	public conversations: Conversation[];
 	@Output()
 	public select = new EventEmitter();
@@ -44,8 +44,13 @@ export class ConversationListComponent implements OnInit, OnDestroy {
 	public ngOnDestroy() {
 	}
 
+	public isActive(conversation: Conversation): boolean {
+		return this.activeConversation !== undefined
+			&& this.activeConversation.getId() == conversation.getId();
+	}
+
 	public gotoConversation(conversation: Conversation): void {
-		this.conversation = conversation;
+		this.activeConversation = conversation;
 		this.select.emit(conversation);
 		// let link = ['/conversation', conversationId];
 		// this.router.navigate(link);

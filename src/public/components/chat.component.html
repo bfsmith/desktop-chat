@@ -1,14 +1,13 @@
-{{conversation}}
-<div>
-	<div *ngIf="user">You are {{user.getName()}}</div>
+<div class="container-fluid">
 	<div class="row">
 		<div class="col-xs-2 user-list">
+			<div *ngIf="user">You are {{user.getName()}}</div>
 			<user-list></user-list>
 		</div>
-		<div class="col-xs-2 user-list">
+		<div class="col-xs-2 conversation-list">
 			<conversation-list (select)="openConversation($event)"></conversation-list>
 		</div>
-		<div class="col-xs-8 chat-log">
+		<div class="col-xs-8 chat-messages">
 			<message-list [conversation]="conversation"></message-list>
 		</div>
 	</div>

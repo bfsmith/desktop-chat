@@ -1,8 +1,8 @@
 import { Conversation } from '../../shared/conversation';
 import { Message } from '../../shared/message';
 import { AppContextService } from './app-context.service';
-import { UserService } from './user.service';
 import { SocketService } from './socket.service';
+import { UserService } from './user.service';
 import { Injectable } from '@angular/core';
 // import * as _ from 'lodash';
 
@@ -10,7 +10,8 @@ import { Injectable } from '@angular/core';
 export class ConversationService {
 	private conversations: Conversation[] = [];
 
-	constructor(private appContext: AppContextService, userService: UserService,
+	constructor(private appContext: AppContextService,
+		userService: UserService,
 		private socketService: SocketService) {
 		socketService.conversations.subscribe((conversation: Conversation) => {
 			let existingConversation = this.getConversationInternal(conversation.getId());
@@ -60,10 +61,6 @@ export class ConversationService {
 		}
 
 		return this.socketService.startConversation(userIds)
-			// .then(conversation => {
-			// 	this.conversations.push(conversation);
-			// 	return Promise.resolve(conversation);
-			// })
 			.catch(error => {
 				console.error(error);
 				return Promise.reject(error);

@@ -1,0 +1,18 @@
+@import '../styles/variables.scss';
+
+.user-list {
+  height: 100%;
+}
+
+.conversation-list {
+  height: 100%;
+	border-right: 1px solid $gray-85;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.chat-messages {
+  height: 100%;
+	padding-left: 0px;
+	padding-right: 0px;
+}

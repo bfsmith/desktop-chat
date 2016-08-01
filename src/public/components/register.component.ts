@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
 	moduleId: module.id,
 	selector: 'register',
-	// styleUrls: ['user-list.component.css'],
+	styleUrls: ['register.component.css'],
 	templateUrl: 'register.component.html',
 })
 export class RegisterComponent {
@@ -22,7 +22,7 @@ export class RegisterComponent {
 	public register() {
 		console.log('registering', this.name);
 		if (this.name !== undefined && this.name !== '') {
-			this.socketService.register(this.name)
+			this.socketService.register(this.name.trim())
 				.then(user => {
 					this.router.navigate(['/chat']);
 				});

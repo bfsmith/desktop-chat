@@ -3,6 +3,7 @@ import { Message } from '../../shared/message';
 import { User } from '../../shared/user';
 import {AppContextService} from '../services/app-context.service';
 import { ConversationService } from '../services/conversation.service';
+import {UserService} from '../services/user.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -22,8 +23,9 @@ export class MessageListComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private conversationService: ConversationService,
+		private userService: UserService,
 		private route: ActivatedRoute,
-		appContext: AppContextService) {
+		private appContext: AppContextService) {
 		this.user = appContext.user;
 	}
 
@@ -39,6 +41,18 @@ export class MessageListComponent implements OnInit, OnDestroy {
 		this.conversation.addMessage(new Message(this.conversation.getId(),
 			this.conversation.getUsers()[0].getId(),
 			"Adding a message..."));
+	}
+
+	public abbreviateUsername(user: User): string {
+		return this.userService.abbreviateUsername(user);
+	}
+
+	public isCurrentUser(user: User): boolean {
+		return this.appContext.isCurrentUser(user);
+	}
+
+	public filterCurrentUser(users: User[]) {
+		return this.userService.filterCurrentUser(users);
 	}
 
 	public ngOnInit() {

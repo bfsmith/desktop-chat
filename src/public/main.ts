@@ -21,7 +21,7 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 		// Moved to bootstrap so they are available to App constructor
 	],
 	selector: 'chat-app',
-	styleUrls: ['main.css'],
+	// styleUrls: ['main.css'],
 	templateUrl: 'main.html',
 })
 export class MainComponent {

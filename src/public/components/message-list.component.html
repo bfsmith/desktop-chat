@@ -1,13 +1,32 @@
-<h1>Message</h1>
-<div *ngIf="conversation">
-	<div *ngFor="let message of conversation.getMessages()" class="col-xs-12">
-		<div class="message" [class.me]="message.getUser().getId() == user.getId()" [class.other]="message.getUser().getId() != user.getId()">
-			<h4>{{message.getUser().getName()}}: {{message.getMessage()}}</h4>
+<div *ngIf="conversation" class="conversation">
+	<div class="row header">
+		<div class="col-xs-12">
+			Conversation with <span class="username text-uppercase" *ngFor="let user of filterCurrentUser(conversation.getUsers())">{{user.getName()}}</span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-12 messages">
+			<ul class="list-unstyled">
+				<li *ngFor="let message of conversation.getMessages()" class="row message" [class.me]="isCurrentUser(message.getUser())" [class.other]="!isCurrentUser(message.getUser())" [class.text-right]="isCurrentUser(message.getUser())">
+					<div class="col-xs-9" [class.col-xs-push-3]="isCurrentUser(message.getUser())">
+						<div class="row">
+							<div *ngIf="conversation.isGroupConversation()" class="col-xs-12 text-uppercase">{{message.getUser().getName()}}</div>
+							<div class="col-xs-12 message-wrapper">
+								<div class="row">
+									<!--<div *ngIf="conversation.isGroupConversation()" class="col-xs-1 col-xs-push-3 username-ab">{{abbreviateUsername(message.getUser())}}</div>-->
+									<div class="col-xs-12 ">
+										<span class="message-contents">{{ message.getMessage() }}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</li>
+			</ul>
 		</div>
 	</div>
 
-	<div>
-		<input type="text" [(ngModel)]="message" placeholder="message" />
-		<button (click)="sendMessage()">Send</button>
+	<div class="input-area row">
+		<input class="message-input col-xs-12 form-control" type="text" [(ngModel)]="message" placeholder="Say something..." (keyup.enter)="sendMessage()" />
 	</div>
 </div>
