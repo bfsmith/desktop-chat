@@ -13,6 +13,7 @@ import * as io from 'socket.io-client';
 
 @Injectable()
 export class SocketService implements OnInit {
+	private userCache: User[] = [];
 	public users: Observable<User>;
 	public messages: Observable<Message>;
 	public conversations: Observable<Conversation>;
@@ -24,6 +25,8 @@ export class SocketService implements OnInit {
 	constructor(private appContext: AppContextService) {
 		this.users = new Observable<User>(sub => {
 			this.userSub = sub;
+			this.userCache.forEach(u => sub.next(u));
+			this.userCache = undefined;
 		});
 		this.conversations = new Observable<Conversation>(sub => {
 			this.conversationSub = sub;
@@ -39,6 +42,7 @@ export class SocketService implements OnInit {
 	}
 
 	public register(name): Promise<User> {
+
 		return new Promise<User>((resolve, reject) => {
 			this.socket.emit(MessageSubject.REGISTER, { name: name }, (msg: SocketMessage<any>) => {
 				console.log(MessageSubject.REGISTER, msg);
@@ -46,7 +50,12 @@ export class SocketService implements OnInit {
 				try {
 					this.appContext.user = User.FROM_POJO(msg.data.user);
 					let users: User[] = msg.data.users.map(u => User.FROM_POJO(u));
-					users.forEach(u => this.userSub.next(u));
+
+					if (this.userSub) {
+						users.forEach(user => this.userSub.next(user));
+					} else {
+						this.userCache.push(...users);
+					}
 
 					this.initListeners(this.socket);
 

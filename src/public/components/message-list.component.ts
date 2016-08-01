@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	moduleId: module.id,
+	properties: ['conversation'],
 	selector: 'user-list',
 	// styleUrls: ['user-list.component.css'],
 	templateUrl: 'message-list.component.html',
@@ -16,7 +17,7 @@ export class MessageListComponent implements OnInit, OnDestroy {
 	@Input()
 	public conversation: Conversation;
 	private message: string;
-	private sub: any;
+	// private sub: any;
 
 	constructor(
 		private conversationService: ConversationService,
@@ -38,24 +39,23 @@ export class MessageListComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit() {
-		this.sub = this.route.params.subscribe(params => {
-			if (params['conversationId'] !== undefined) {
-				let id: string = params['conversationId'];
-				this.conversationService.getConversation(id)
-					.then(conversation => {
-						this.conversation = conversation;
-						this.message = '';
-					})
-					.catch(console.error.bind(console));
-			} else {
-				this.conversation = null;
-				this.message = '';
-			}
-		});
+		// this.sub = this.route.params.subscribe(params => {
+		// 	if (params['conversationId'] !== undefined) {
+		// 		let id: string = params['conversationId'];
+		// 		this.conversationService.getConversation(id)
+		// 			.then(conversation => {
+		// 				this.conversation = conversation;
+		// 				this.message = '';
+		// 			})
+		// 			.catch(console.error.bind(console));
+		// 	} else {
+		// 		this.conversation = null;
+		// 		this.message = '';
+		// 	}
+		// });
 	}
 
 	public ngOnDestroy() {
-		this.sub.unsubscribe();
+		// this.sub.unsubscribe();
 	}
 }
-

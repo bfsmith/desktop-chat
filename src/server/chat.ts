@@ -137,7 +137,7 @@ export default function (io: SocketIO.Server) {
 
 		socket.on(MessageSubject.MESSAGE, (client: { message: any }, response: Function) => {
 			console.log(MessageSubject.MESSAGE, client);
-			
+
 			try {
 				client.message.createdDate = new Date();
 				let message = Message.FROM_POJO(client.message);

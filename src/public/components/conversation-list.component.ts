@@ -4,17 +4,21 @@ import { User } from '../../shared/user';
 import { AppContextService } from '../services/app-context.service';
 import { ConversationService } from '../services/conversation.service';
 import { UserService } from '../services/user.service';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
 	moduleId: module.id,
+	properties: ['conversation'],
 	selector: 'conversation-list',
-	// styleUrls: ['user-list.component.css'],
+	// styleUrls: ['conversation-list.component.css'],
 	templateUrl: 'conversation-list.component.html',
 })
 export class ConversationListComponent implements OnInit, OnDestroy {
+	public conversation: Conversation;
 	public conversations: Conversation[];
+	@Output()
+	public select = new EventEmitter();
 
 	constructor(
 		private appContextService: AppContextService,
@@ -40,9 +44,11 @@ export class ConversationListComponent implements OnInit, OnDestroy {
 	public ngOnDestroy(){
 	}
 
-	public gotoConversation(conversationId: string): void {
-		let link = ['/conversation', conversationId];
-		this.router.navigate(link);
+	public gotoConversation(conversation: Conversation): void {
+		this.conversation = conversation;
+		this.select.emit(conversation);
+		// let link = ['/conversation', conversationId];
+		// this.router.navigate(link);
 	}
 }
 

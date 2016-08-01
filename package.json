@@ -21,9 +21,9 @@
     "test": "npm run mocha -s -- -d",
     "test:w": "concurrently 'npm run build:w -s' 'npm run test -s -- -w'",
     "clean": "rm -rf $npm_package_config_outPath/",
-    "live-reload": "live-reload --port 35729 $npm_package_config_outPath/ --delay 1000",
+    "live-reload": "live-reload --port 35729 $npm_package_config_outPath/ --delay 2000",
     "watch": "concurrently 'npm run build:w -s' 'npm run copyAssets:w -s'",
-    "start": "npm run build && concurrently 'npm run watch' \"nodemon -w $npm_package_config_outPath/ -d 2 --debug $npm_package_config_outPath/public/server.js\" 'npm run live-reload -s' 'open http://localhost:3000/'"
+    "start": "npm run build && concurrently 'npm run watch' \"nodemon -w $npm_package_config_outPath/ -d 1 --debug $npm_package_config_outPath/public/server.js\" 'npm run live-reload -s' 'open http://localhost:3000/'"
   },
   "keywords": [],
   "author": "",

@@ -1,0 +1,15 @@
+{{conversation}}
+<div>
+	<div *ngIf="user">You are {{user.getName()}}</div>
+	<div class="row">
+		<div class="col-xs-2 user-list">
+			<user-list></user-list>
+		</div>
+		<div class="col-xs-2 user-list">
+			<conversation-list (select)="openConversation($event)"></conversation-list>
+		</div>
+		<div class="col-xs-8 chat-log">
+			<message-list [conversation]="conversation"></message-list>
+		</div>
+	</div>
+</div>

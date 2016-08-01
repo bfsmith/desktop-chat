@@ -11,16 +11,3 @@ body {
 	clear: both;
 }
 
-.user-list {
-	height: 100%;
-	/*width: 20%;
-	float: left;*/
-	background: #ccc;
-}
-
-.chat-log {
-	height: 100%;
-	/*width: 80%;
-	float: left;*/
-	background: #eee;
-}

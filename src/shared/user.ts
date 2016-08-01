@@ -17,14 +17,14 @@ export class User {
 	public getName(): string {
 		return this.name;
 	}
-	public setName(name: string) {
+	public setName(name: string): void {
 		this.name = name;
 	}
 
 	public getStatus(): Status {
 		return this.status;
 	}
-	public setStatus(status: Status) {
+	public setStatus(status: Status): void {
 		this.status = status;
 	}
 

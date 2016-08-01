@@ -1,6 +1,3 @@
-import { ConversationListComponent } from './components/conversation-list.component';
-import { RegisterComponent } from './components/register.component';
-import { UserListComponent } from './components/user-list.component';
 import { APP_ROUTER_PROVIDERS, COMPONENTS } from './routes';
 import { AppContextService } from './services/app-context.service';
 import { ConversationService } from './services/conversation.service';
@@ -9,15 +6,13 @@ import { UserService } from './services/user.service';
 
 import { Component } from '@angular/core';
 import { bootstrap } from '@angular/platform-browser-dynamic';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-// import { Observable } from 'rxjs/Observable';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 
 @Component({
 	directives: [
 		ROUTER_DIRECTIVES,
-		ConversationListComponent,
-		RegisterComponent,
-		UserListComponent,
+		// ConversationListComponent,
+		// UserListComponent,
 	],
 	precompile: [
 		COMPONENTS
@@ -31,14 +26,18 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 })
 export class MainComponent {
 	public user: any;
-	constructor(appContext: AppContextService, socketService: SocketService) {
-		// this.user = appContext.user;
-		socketService.register(Math.random().toString(36).substring(2, 6))
-		.then(user => {
-			this.user = user;
-		})
-		.catch(console.error.bind(console));
+	constructor(appContext: AppContextService, router: Router) {
+		this.user = appContext.user;
+		if (this.user === undefined) {
+			router.navigate(['/register']);
+		}
 		
+		// socketService.register(Math.random().toString(36).substring(2, 6))
+		// .then(user => {
+		// 	this.user = user;
+		// })
+		// .catch(console.error.bind(console));
+
 		// Observable Example
 		/*
 		let numbers = new Observable<number>(subscriber => {

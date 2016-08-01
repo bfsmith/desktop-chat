@@ -1,6 +1,6 @@
 <h1>Conversations</h1>
 <div *ngFor="let conversation of conversations" class="col-xs-12">
 	<div class="conversation">
-		<a (click)="gotoConversation(conversation.getId())"><h4><span *ngFor="let user of getOtherUsers(conversation)">{{user.getName()}}</span></h4></a>
+		<a (click)="gotoConversation(conversation)"><h4><span *ngFor="let user of getOtherUsers(conversation)">{{user.getName()}}</span></h4></a>
 	</div>
 </div>
