@@ -1,27 +1,30 @@
 import { Conversation } from '../../shared/conversation';
 import { Message } from '../../shared/message';
 import { User } from '../../shared/user';
+import {AppContextService} from '../services/app-context.service';
 import { ConversationService } from '../services/conversation.service';
-import { UserService } from '../services/user.service';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
 	moduleId: module.id,
 	properties: ['conversation'],
-	selector: 'user-list',
-	// styleUrls: ['user-list.component.css'],
+	selector: 'message-list',
+	styleUrls: ['message-list.component.css'],
 	templateUrl: 'message-list.component.html',
 })
 export class MessageListComponent implements OnInit, OnDestroy {
 	@Input()
 	public conversation: Conversation;
+	public user: User;
 	private message: string;
 	// private sub: any;
 
 	constructor(
 		private conversationService: ConversationService,
-		private route: ActivatedRoute) {
+		private route: ActivatedRoute,
+		appContext: AppContextService) {
+		this.user = appContext.user;
 	}
 
 	public sendMessage() {

@@ -7,7 +7,7 @@
     "outPath": "build"
   },
   "scripts": {
-    "build:ts": "tsc --outDir $npm_package_config_outPath/",
+    "build:ts": "tsfmt -r && tsc --outDir $npm_package_config_outPath/",
     "postbuild:ts": "npm run lint -s",
     "build": "npm run build:ts -s",
     "postbuild": "npm run copyAssets -s",

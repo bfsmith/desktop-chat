@@ -23,10 +23,9 @@ export class RegisterComponent {
 		console.log('registering', this.name);
 		if (this.name !== undefined && this.name !== '') {
 			this.socketService.register(this.name)
-			.then(user => {
-				this.router.navigate(['/chat']);
-			});
+				.then(user => {
+					this.router.navigate(['/chat']);
+				});
 		}
 	}
 }
-

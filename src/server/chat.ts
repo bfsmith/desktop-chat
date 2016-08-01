@@ -20,7 +20,7 @@ import * as uuid from 'node-uuid';
 
 */
 
-export default function (io: SocketIO.Server) {
+export default function(io: SocketIO.Server) {
 	let users: User[] = [];
 	let sockets: { [userid: string]: SocketIO.Socket } = {};
 	// let secureTokens: { [key: string]: string } = {};

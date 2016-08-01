@@ -30,8 +30,8 @@ export class User {
 
 	public static FROM_POJO(pojo: any): User {
 		if (pojo.id !== undefined
-				&& pojo.name !== undefined
-				&& pojo.status !== undefined) {
+			&& pojo.name !== undefined
+			&& pojo.status !== undefined) {
 			let u = new User(pojo.id);
 			u.setName(pojo.name);
 			u.setStatus(pojo.status !== undefined

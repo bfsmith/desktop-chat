@@ -1,7 +1,7 @@
 <h1>Message</h1>
 <div *ngIf="conversation">
 	<div *ngFor="let message of conversation.getMessages()" class="col-xs-12">
-		<div class="message">
+		<div class="message" [class.me]="message.getUser().getId() == user.getId()" [class.other]="message.getUser().getId() != user.getId()">
 			<h4>{{message.getUser().getName()}}: {{message.getMessage()}}</h4>
 		</div>
 	</div>

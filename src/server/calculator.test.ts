@@ -7,12 +7,12 @@ describe('Calculator', function() {
 	const calc = new Calculator();
 
 	describe('#add', function() {
-		it('2+3', function () {
+		it('2+3', function() {
 			calc.add(2, 3).should.equal(5);
 		});
 	});
 	describe('#subtract', function() {
-		it('5-3', function () {
+		it('5-3', function() {
 			calc.subtract(5, 3).should.equal(2);
 		});
 	});

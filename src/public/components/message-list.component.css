@@ -1,0 +1,11 @@
+.conversation::after {
+	clear: both;
+}
+
+.message .me {
+	float: right;
+}
+
+.message .other {
+	float: left
+}

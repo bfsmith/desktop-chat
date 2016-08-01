@@ -8,11 +8,11 @@ let server = http.createServer((req: http.IncomingMessage, res) => {
 	let path;
 	if (fs.existsSync(__dirname + url) && fs.statSync(__dirname + url).isFile()) {
 		path = __dirname + url;
-	}	else if (fs.existsSync(__dirname + '/..' + url) && fs.statSync(__dirname + '/..' + url).isFile()) {
+	} else if (fs.existsSync(__dirname + '/..' + url) && fs.statSync(__dirname + '/..' + url).isFile()) {
 		path = __dirname + '/..' + url;
 	} else if (fs.existsSync(__dirname + '/../..' + url) && fs.statSync(__dirname + '/../..' + url).isFile()) {
 		path = __dirname + '/../..' + url;
-	}	else {
+	} else {
 		path = __dirname + '/index.html';
 	}
 	fs.readFile(path, (err: NodeJS.ErrnoException, data: Buffer) => {

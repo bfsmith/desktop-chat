@@ -1,20 +1,16 @@
-import { ConversationListComponent } from './conversation-list.component';
-import { RegisterComponent } from './register.component';
-import { UserListComponent } from './user-list.component';
 import { Conversation } from '../../shared/conversation';
 import { User } from '../../shared/user';
-import { APP_ROUTER_PROVIDERS, COMPONENTS } from '../routes';
 import { AppContextService } from '../services/app-context.service';
-import { ConversationService } from '../services/conversation.service';
-import { UserService } from '../services/user.service';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ConversationListComponent } from './conversation-list.component';
+import {MessageListComponent} from './message-list.component';
+import { UserListComponent } from './user-list.component';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
 	directives: [
 		ConversationListComponent,
+		MessageListComponent,
 		UserListComponent,
 	],
 	moduleId: module.id,
@@ -40,4 +36,3 @@ export class ChatComponent {
 		this.conversation = conversation;
 	}
 }
-

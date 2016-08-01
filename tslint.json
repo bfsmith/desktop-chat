@@ -170,7 +170,7 @@
 		],
 		"no-consecutive-blank-lines": false,
 		"no-empty-line-after-opening-brace": false,
-		"no-trailing-whitespace": false,
+		"no-trailing-whitespace": true,
 		"no-unnecessary-semicolons": true,
 		"one-line": [
 			true,
@@ -208,11 +208,11 @@
 		"prefer-type-cast": true,
 		"no-angle-bracket-type-assertion": false,
 		"missing-optional-annotation": false,
-		"no-duplicate-parameter-names": false,
+		"no-duplicate-parameter-names": true,
 		"no-missing-visibility-modifiers": true,
 		"no-multiple-var-decl": false,
 		"no-switch-case-fall-through": false,
-		"no-unreachable": false,
-		"no-unused-imports": false
+		"no-unreachable": true,
+		"no-unused-imports": true
 	}
 }

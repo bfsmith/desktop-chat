@@ -41,7 +41,7 @@ export class ConversationListComponent implements OnInit, OnDestroy {
 		this.conversations = this.conversationService.getConversations();
 	}
 
-	public ngOnDestroy(){
+	public ngOnDestroy() {
 	}
 
 	public gotoConversation(conversation: Conversation): void {
@@ -51,4 +51,3 @@ export class ConversationListComponent implements OnInit, OnDestroy {
 		// this.router.navigate(link);
 	}
 }
-

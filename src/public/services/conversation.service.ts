@@ -29,9 +29,9 @@ export class ConversationService {
 	public getConversation(id: string) {
 		return Promise.resolve(this.getConversationInternal(id));
 	}
-  public getConversations(): Conversation[] {
-    return this.conversations;
-  }
+	public getConversations(): Conversation[] {
+		return this.conversations;
+	}
 
 	public startConversation(userIds: string[]): Promise<Conversation> {
 		let allUserIds = userIds.concat(this.appContext.user.getId());
@@ -41,9 +41,9 @@ export class ConversationService {
 			}
 			// Count matching userIds and compare against the number of supplied userids
 			let count = 0;
-			for(let i = 0; i < c.getUsers().length; i++) {
+			for (let i = 0; i < c.getUsers().length; i++) {
 				let found = false;
-				for(let j = 0; j < c.getUsers().length; j++) {
+				for (let j = 0; j < c.getUsers().length; j++) {
 					if (c.getUsers()[i].getId() === allUserIds[j]) {
 						found = true;
 						break;

@@ -31,7 +31,7 @@ export class MainComponent {
 		if (this.user === undefined) {
 			router.navigate(['/register']);
 		}
-		
+
 		// socketService.register(Math.random().toString(36).substring(2, 6))
 		// .then(user => {
 		// 	this.user = user;
