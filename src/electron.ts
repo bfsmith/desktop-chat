@@ -1,4 +1,5 @@
 import * as electron from 'electron';
+import * as path from 'path';
 const app = electron.app;
 
 // let windows: any = {};
@@ -30,14 +31,23 @@ function createWindow() {
 	// Create the browser window.
 	win = new electron.BrowserWindow({
 		height: 600,
-		width: 800
+		width: 800,
+		webPreferences: {
+			preload: path.resolve(__dirname, 'electron-preload.js')
+		}
 	});
 
-	// and load the index.html of the app.
-	win.loadURL(`file://${__dirname}/app2/index.html`);
+	win.loadURL(`file://${__dirname}/public/index.html`);
 
-	// Open the DevTools.
-	win.webContents.openDevTools();
+	// and load the index.html of the app.
+	// win.showUrl(path.resolve(__dirname, 'public', 'index.html'), { ioUrl: 'http://localhost.att.com:3000' }, () => {
+	// 	console.log('the window should be showing with the contents of the URL now');
+	// });
+
+	if (process.env.DEBUG == true) {
+		// Open the DevTools.
+		win.webContents.openDevTools();
+	}
 
 	// Emitted when the window is closed.
 	win.on('closed', () => {

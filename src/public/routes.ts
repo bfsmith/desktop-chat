@@ -5,7 +5,7 @@ import { RouterConfig, provideRouter }	from '@angular/router';
 const routes: RouterConfig = [
 	{
 		path: '',
-		redirectTo: '/register',
+		redirectTo: 'register',
 		pathMatch: 'full'
 	},
 	{

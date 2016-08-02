@@ -19,7 +19,9 @@
     "compileOnSave": true,
     "exclude": [
         "node_modules",
-        "build"
+        "app",
+				"builds",
+				"tmp"
     ],
 		"filesGlob": [
 			"src/**/*.ts"

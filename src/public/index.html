@@ -2,18 +2,18 @@
 
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	<base href="/" />
+	<!--<base href="/" />-->
 	<!-- Bootstrap -->
-	<link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
 
 	<!-- 1. Load libraries -->
 	<!-- Polyfill(s) for older browsers -->
-	<script src="/node_modules/core-js/client/shim.min.js"></script>
-	<script src="/node_modules/zone.js/dist/zone.js"></script>
-	<script src="/node_modules/reflect-metadata/Reflect.js"></script>
-	<script src="/node_modules/systemjs/dist/system.src.js"></script>
+	<script src="../../node_modules/core-js/client/shim.min.js"></script>
+	<script src="../../node_modules/zone.js/dist/zone.js"></script>
+	<script src="../../node_modules/reflect-metadata/Reflect.js"></script>
+	<script src="../../node_modules/systemjs/dist/system.src.js"></script>
 	<!-- 2. Configure SystemJS -->
-	<script src="/systemjs.config.js"></script>
+	<script src="systemjs.config.js"></script>
 	<script>
 		System.import('app').catch(function(err){ console.error(err); });
 	</script>
@@ -21,13 +21,12 @@
 		// localStorage.debug = '*';
 		delete localStorage.debug;
 	</script>
-	<script src="/socket.io/socket.io.js"></script>
-	<link rel="stylesheet" href="/styles/main.css" />
+	<script src="../../node_modules/socket.io-client/socket.io.js"></script>
+	<link rel="stylesheet" href="styles/main.css" />
 </head>
 
 <body>
 	<chat-app>Loading</chat-app>
-	
 	<script type="text/javascript" src="http://localhost:35729/"></script>
 </body>
 

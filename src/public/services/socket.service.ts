@@ -1,12 +1,9 @@
-import { AppContextService } from '../services/app-context.service';
-import { ConversationService } from '../services/conversation.service';
-import { UserService } from '../services/user.service';
 import { Conversation } from '../../shared/conversation';
 import { Message } from '../../shared/message';
 import { MessageSubject } from '../../shared/message.subject';
 import { SocketMessage } from '../../shared/socket-message';
-import { Status } from '../../shared/status';
 import { User } from '../../shared/user';
+import { AppContextService } from '../services/app-context.service';
 import { Injectable, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import * as io from 'socket.io-client';
@@ -34,15 +31,16 @@ export class SocketService implements OnInit {
 		this.messages = new Observable<Message>(sub => {
 			this.messageSub = sub;
 		});
-		this.socket = io.connect(`http://localhost:3000/`);
-		// this.initListeners(this.socket);
+		if ((<any>window).ioUrl) {
+			appContext.ioUrl = (<any>window).ioUrl;
+		}
+		this.socket = io.connect(this.appContext.ioUrl);
 	}
 
 	public ngOnInit() {
 	}
 
 	public register(name): Promise<User> {
-
 		return new Promise<User>((resolve, reject) => {
 			this.socket.emit(MessageSubject.REGISTER, { name: name }, (msg: SocketMessage<any>) => {
 				console.log(MessageSubject.REGISTER, msg);

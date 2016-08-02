@@ -19,6 +19,7 @@ export class MessageListComponent implements OnInit, OnDestroy {
 	public conversation: Conversation;
 	public user: User;
 	private message: string;
+	private interval: any;
 	// private sub: any;
 
 	constructor(
@@ -56,23 +57,16 @@ export class MessageListComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit() {
-		// this.sub = this.route.params.subscribe(params => {
-		// 	if (params['conversationId'] !== undefined) {
-		// 		let id: string = params['conversationId'];
-		// 		this.conversationService.getConversation(id)
-		// 			.then(conversation => {
-		// 				this.conversation = conversation;
-		// 				this.message = '';
-		// 			})
-		// 			.catch(console.error.bind(console));
-		// 	} else {
-		// 		this.conversation = null;
-		// 		this.message = '';
-		// 	}
-		// });
+		// HACK
+		// There's a weird issue with the change watcher for this.conversation
+		// It can take several seconds to see a new message.  This forces an update
+		//  check every 100ms.
+		this.interval = setInterval(() => {
+			this.conversation.getMessages();
+		}, 100);
 	}
 
 	public ngOnDestroy() {
-		// this.sub.unsubscribe();
+		clearInterval(this.interval);
 	}
 }

@@ -6,11 +6,11 @@
   // map tells the System loader where to look for things
   var map = {
     'app':                        '', // 'dist',
-    '@angular':                   'node_modules/@angular',
-    'angular2-in-memory-web-api': 'node_modules/angular2-in-memory-web-api',
+		'@angular':                   '../../node_modules/@angular',
+    'angular2-in-memory-web-api': '../../node_modules/angular2-in-memory-web-api',
     // 'lodash':                     'node_modules/lodash',
-    'rxjs':                       'node_modules/rxjs',
-    'socket.io-client':           'node_modules/socket.io-client'
+    'rxjs':                       '../../node_modules/rxjs',
+    'socket.io-client':           '../../node_modules/socket.io-client'
   };
   // packages tells the System loader how to load when no filename and/or no extension
   var packages = {
@@ -46,7 +46,8 @@
   ngPackageNames.forEach(setPackageConfig);
   var config = {
     map: map,
-    packages: packages
+    packages: packages,
+		defaultJSExtensions: true,
   };
   System.config(config);
 })(this);

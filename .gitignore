@@ -2,8 +2,12 @@ node_modules
 typings
 .tscache
 build
+builds
+app
+dist
 **/*.log
 .vscode
 .bowerrc
 .tsdrc
 *.css
+*.tar.gz

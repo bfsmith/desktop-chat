@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class AppContextService {
+	public ioUrl: string;
 	public user: User;
 	// public token: string;
 

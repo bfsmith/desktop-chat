@@ -4,6 +4,7 @@ import { ConversationService } from './services/conversation.service';
 import { SocketService } from './services/socket.service';
 import { UserService } from './services/user.service';
 
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { Component } from '@angular/core';
 import { bootstrap } from '@angular/platform-browser-dynamic';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
@@ -25,10 +26,8 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 	templateUrl: 'main.html',
 })
 export class MainComponent {
-	public user: any;
 	constructor(appContext: AppContextService, router: Router) {
-		this.user = appContext.user;
-		if (this.user === undefined) {
+		if (appContext.user === undefined) {
 			router.navigate(['/register']);
 		}
 
@@ -66,6 +65,7 @@ export class MainComponent {
 
 bootstrap(MainComponent, [
 	APP_ROUTER_PROVIDERS,
+	{ provide: LocationStrategy, useClass: HashLocationStrategy },
 	SocketService,
 	AppContextService,
 	UserService,
