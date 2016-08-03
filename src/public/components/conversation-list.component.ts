@@ -1,28 +1,33 @@
 import { Conversation } from '../../shared/conversation';
-import { Message } from '../../shared/message';
 import { User } from '../../shared/user';
 import { AppContextService } from '../services/app-context.service';
 import { ConversationService } from '../services/conversation.service';
-import { UserService } from '../services/user.service';
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {UserService} from '../services/user.service';
+import { UserListComponent } from './user-list.component';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
+	directives: [
+		UserListComponent,
+	],
 	moduleId: module.id,
 	properties: ['conversation'],
 	selector: 'conversation-list',
 	styleUrls: ['conversation-list.component.css'],
 	templateUrl: 'conversation-list.component.html',
 })
-export class ConversationListComponent implements OnInit, OnDestroy {
+export class ConversationListComponent implements OnInit {
 	public activeConversation: Conversation;
 	public conversations: Conversation[];
 	@Output()
 	public select = new EventEmitter();
+	public userListVisible: boolean = false;
 
 	constructor(
 		private appContextService: AppContextService,
 		private conversationService: ConversationService,
+		private userService: UserService,
 		private route: ActivatedRoute,
 		private router: Router) {
 	}
@@ -41,18 +46,39 @@ export class ConversationListComponent implements OnInit, OnDestroy {
 		this.conversations = this.conversationService.getConversations();
 	}
 
-	public ngOnDestroy() {
-	}
-
 	public isActive(conversation: Conversation): boolean {
 		return this.activeConversation !== undefined
 			&& this.activeConversation.getId() == conversation.getId();
 	}
 
+	public getBadgeIcon(conversation: Conversation): string {
+		if (conversation.isGroupConversation()) {
+			return "C";
+		}
+		let users = this.getOtherUsers(conversation);
+		return this.userService.abbreviateUsername(users[0]);
+	}
+
+	public latestMessage(conversation: Conversation) {
+		let messages = conversation.getMessages();
+		return messages.length > 0
+			? messages[messages.length - 1].getMessage()
+			: undefined;
+	}
+
 	public gotoConversation(conversation: Conversation): void {
 		this.activeConversation = conversation;
 		this.select.emit(conversation);
-		// let link = ['/conversation', conversationId];
-		// this.router.navigate(link);
+	}
+
+	public openUserList() {
+		this.userListVisible = true;
+	}
+
+	public closeUserList(conversation?: Conversation) {
+		this.userListVisible = false;
+		if (conversation) {
+			this.gotoConversation(conversation);
+		}
 	}
 }

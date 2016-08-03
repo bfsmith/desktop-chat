@@ -1,4 +1,6 @@
-export class Message {
+import { IMessage } from './imessage';
+
+export class Message implements IMessage {
 	constructor(private conversationId: string, private fromUserId: string, private message: string, private createdDate?: Date) {
 		this.createdDate = createdDate || new Date();
 	}

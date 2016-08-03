@@ -18,6 +18,7 @@
 			margin-bottom: 10px;
 		}
 		.btn {
+			@include success();
 			width: 200px;
 		}
 	}

@@ -1,14 +1,42 @@
+@import '../styles/variables.scss';
+
+.header {
+	height: 45px;
+	padding: 4px 10px;
+
+	a {
+		width: 49%;
+		
+		&.start-btn {
+			@include success();
+		}
+		&.close-btn {
+			@include failure();
+		}
+	}
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
 .user {
 	cursor: pointer;
-}
+	padding: 10px 20px;
 
-.user a:hover {
-	text-decoration: none;
-}
+	i {
+		width: 30px;
+	}
 
-.online {
-	color: #090;
-}
-.offline {
-	color: #a00;
+	span {
+		font-size: 20pt;
+	}
+
+	.online {
+		color: $success;
+	}
+	.offline {
+		color: $failure;
+	}
 }

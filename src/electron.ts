@@ -44,7 +44,7 @@ function createWindow() {
 	// 	console.log('the window should be showing with the contents of the URL now');
 	// });
 
-	if (process.env.DEBUG == true) {
+	if (process.env.DEBUG) {
 		// Open the DevTools.
 		win.webContents.openDevTools();
 	}

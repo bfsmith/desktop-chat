@@ -1,19 +1,17 @@
-<div *ngIf="conversations">
-	<div class="row header">
-		<div class="col-xs-12">
-			<a class="btn btn-primary">New Conversation</a>
-		</div>
-	</div>
-	<div class="row conversations">
-		<div class="col-xs-12 ">
-			<ul class="list-unstyled">
-				<li *ngFor="let conversation of conversations" class="row conversation" (click)="gotoConversation(conversation)" [class.active]="isActive(conversation)">
-					<div class="col-xs-3"><span class="user-badge">AB</span></div>
-					<div class="col-xs-9">
-						<h4><span *ngFor="let user of getOtherUsers(conversation)">{{user.getName()}}</span></h4>
-					</div>
-				</li>
-			</ul>
-		</div>
-	</div>
+<div class="header">
+	<a class="btn" (click)="openUserList()">New Conversation</a>
+</div>
+<div class="conversations">
+		<ul class="conversation-list">
+			<li *ngFor="let conversation of conversations" class="conversation" (click)="gotoConversation(conversation)" [class.active]="isActive(conversation)">
+				<div class="user-badge"><span>{{getBadgeIcon(conversation)}}</span></div>
+				<div class="conversation-content">
+					<div class="users"><span *ngFor="let user of getOtherUsers(conversation)">{{user.getName()}}</span></div>
+					<div class="latest-message">{{latestMessage(conversation)}}</div>
+				</div>
+			</li>
+		</ul>
+</div>
+<div class="user-list" [class.open]="userListVisible">
+	<user-list (close)="closeUserList($event)"></user-list>
 </div>

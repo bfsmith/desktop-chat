@@ -4,7 +4,7 @@ import { User } from '../../shared/user';
 import {AppContextService} from '../services/app-context.service';
 import { ConversationService } from '../services/conversation.service';
 import {UserService} from '../services/user.service';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -14,13 +14,11 @@ import { ActivatedRoute } from '@angular/router';
 	styleUrls: ['message-list.component.css'],
 	templateUrl: 'message-list.component.html',
 })
-export class MessageListComponent implements OnInit, OnDestroy {
-	@Input()
-	public conversation: Conversation;
-	public user: User;
+export class MessageListComponent {
+	private conversation: Conversation;
+	private user: User;
 	private message: string;
 	private interval: any;
-	// private sub: any;
 
 	constructor(
 		private conversationService: ConversationService,
@@ -56,17 +54,17 @@ export class MessageListComponent implements OnInit, OnDestroy {
 		return this.userService.filterCurrentUser(users);
 	}
 
-	public ngOnInit() {
+	public setConversation(conversation: Conversation) {
+		if (this.interval) {
+			clearInterval(this.interval);
+		}
+		this.conversation = conversation;
 		// HACK
-		// There's a weird issue with the change watcher for this.conversation
-		// It can take several seconds to see a new message.  This forces an update
-		//  check every 100ms.
+		// Electron somehow delays the event loop when not in focus. This delays the angular change watcher
+		//  and can make it take several seconds for a new message to pop up when the app isn't in focus.
+		//  This forces the app to continue running and speeds up changes.
 		this.interval = setInterval(() => {
 			this.conversation.getMessages();
 		}, 100);
-	}
-
-	public ngOnDestroy() {
-		clearInterval(this.interval);
 	}
 }

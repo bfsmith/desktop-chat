@@ -4,7 +4,6 @@ import { AppContextService } from './app-context.service';
 import { SocketService } from './socket.service';
 import { UserService } from './user.service';
 import { Injectable } from '@angular/core';
-// import * as _ from 'lodash';
 
 @Injectable()
 export class ConversationService {

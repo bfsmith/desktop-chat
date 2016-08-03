@@ -8,4 +8,15 @@ body {
 	height: 100%;
 	margin: 0;
 	background: $gray-95;
+
+	.loader-wrapper {
+		height: 100%;
+		display: table;
+		margin: auto;
+
+		.loader {
+			display: table-cell;
+			vertical-align: middle;
+		}
+	}
 }

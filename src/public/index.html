@@ -4,7 +4,6 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 	<!--<base href="/" />-->
 	<!-- Bootstrap -->
-	<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
 
 	<!-- 1. Load libraries -->
 	<!-- Polyfill(s) for older browsers -->
@@ -22,11 +21,20 @@
 		delete localStorage.debug;
 	</script>
 	<script src="../../node_modules/socket.io-client/socket.io.js"></script>
+	<link rel="stylesheet" href="styles/font-awesome.min.css" />
+	<link rel="stylesheet" href="../../node_modules/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="styles/main.css" />
 </head>
 
 <body>
-	<chat-app>Loading</chat-app>
+	<chat-app>
+		<div class="loader-wrapper">
+			<div class="loader">
+				<i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+				<span class="sr-only">Loading...</span>
+			</div>
+		</div>
+	</chat-app>
 	<script type="text/javascript" src="http://localhost:35729/"></script>
 </body>
 

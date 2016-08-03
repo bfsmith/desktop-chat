@@ -1,7 +1,8 @@
+import { IMessage } from './imessage';
 import { Message } from './message';
 import { User } from './user';
 
-export class UserMessage {
+export class UserMessage implements IMessage {
 	constructor(private message: Message, private user: User) {
 	}
 

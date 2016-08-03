@@ -1,4 +1,3 @@
-// import { Connection } from './connection';
 import { Conversation } from '../shared/conversation';
 import { Message } from '../shared/message';
 import { MessageSubject } from '../shared/message.subject';

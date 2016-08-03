@@ -1,11 +1,11 @@
 @import '../styles/variables.scss';
 
-.user-list {
-  height: 100%;
-}
-
 .conversation-list {
+	float: left;
   height: 100%;
+	width: 30%;
+	// min-width: 200px;
+	// max-width: 300px;
 	border-right: 1px solid $gray-85;
 	padding-left: 0px;
 	padding-right: 0px;
@@ -15,4 +15,8 @@
   height: 100%;
 	padding-left: 0px;
 	padding-right: 0px;
+	width: 70%;
+	margin-left: 30%;
+	// min-width: 400px;
+	// max-width: calc(100% - 300px);
 }

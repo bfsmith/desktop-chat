@@ -2,10 +2,11 @@
 
 .header {
 	height: 45px;
-	padding: 4px 0;
+	padding: 4px 10px;
 
 	.btn {
 		width: 100%;
+		@include primary();
 	}
 }
 
@@ -14,29 +15,84 @@
 	overflow-y: auto;
 	margin-left: 0;
 	margin-right: 0;
+	height: calc(100% - 45px);
 
+	.conversation-list {
+		list-style: none;
+		margin: 0;
+		padding: 0;
 
-	.conversation {
-		cursor: pointer;
-		padding: 10px 0;
+		.conversation {
+			cursor: pointer;
+			padding: 8px 0;
+			height: 64px;
 
-		// &:hover {
-		// 	background: $gray-85;
-		// }
+			// &:hover {
+			// 	background: $gray-85;
+			// }
 
-		&.active {
-			background: #49f;
+			&.active {
+				background: #49f;
+			}
+
+			&::after {
+				clear: both;
+			}
+
+			.user-badge {
+				float: left;
+				margin-left: 20px;
+				background: $gray-70;
+				border-radius: 24px;
+				color: $gray-95;
+				font-size: 12pt;
+				height: 48px;
+				// padding: 13px;
+				width: 48px;
+
+				span {
+					margin: 12px auto;
+					display: inline-block;
+					width: 100%;
+					text-align: center;
+				}
+			}
+
+			.conversation-content {
+				margin-left: 68px;
+				padding: 3px 12px 0 4px;
+
+				.users {
+					font-size: 12pt;
+					font-weight: bold;
+					width: 100%;
+					text-overflow: ellipsis;
+					white-space: nowrap; 
+				}
+
+				.latest-message {
+					font-size: 10pt;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					white-space: nowrap; 
+				}
+			}
 		}
+	}
+}
 
-		.user-badge {
-			background: $gray-70;
-			border-radius: 24px;
-			color: $gray-95;
-			display: inline-block;
-			font-size: 12pt;
-			height: 48px;
-			padding: 13px;
-			width: 48px;
-		}
+.user-list {
+	height: 100%;
+	position: absolute;
+	width: 30%;
+	top: 0;
+	left: -30%;
+	background: $gray-95;
+	transition: left .3s;
+	transition-timing-function: ease;
+	border-right: 2px solid $gray-70;
+
+	&.open {
+		left: 0;
 	}
 }

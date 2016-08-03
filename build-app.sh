@@ -14,4 +14,5 @@ cp -R node_modules $TEMP/.
 cp -R $SRC/public $SRC/shared $SRC/electron* $TEMP/app/.
 cp package.json $TEMP/.
 electron-packager $TEMP --platform=darwin --arch=x64 --out=$OUT --overwrite --asar
+tar czf DesktopChat.app.tar.gz $OUT/DesktopChat-darwin-x64/DesktopChat.app
 rm -rf $TEMP

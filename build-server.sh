@@ -10,7 +10,8 @@ TEMP=tmp
 rm -rf $TEMP
 mkdir -p $TEMP
 cp -R node_modules $TEMP/.
-cp -R $SRC/server $SRC/shared $TEMP/.
+# cp -R $SRC/server $SRC/shared $TEMP/.
+rsync -az --exclude='**/*.map' --exclude='**/*.test.*' --include='*' --prune-empty-dirs $SRC/public $SRC/server $SRC/shared $TEMP/
 mv $TEMP/server/start.sh $TEMP/start.sh
 tar -czf server.tar.gz $TEMP/*
 rm -rf $TEMP
