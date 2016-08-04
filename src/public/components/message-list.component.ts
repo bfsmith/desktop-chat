@@ -26,6 +26,10 @@ export class MessageListComponent {
 		private route: ActivatedRoute,
 		private appContext: AppContextService) {
 		this.user = appContext.user;
+
+		appContext.activeConversation.subscribe(conversation => {
+			this.setConversation(conversation);
+		});
 	}
 
 	public sendMessage() {
@@ -34,12 +38,6 @@ export class MessageListComponent {
 				this.message = '';
 			})
 			.catch(console.error.bind(console));
-	}
-
-	public addMessage() {
-		this.conversation.addMessage(new Message(this.conversation.getId(),
-			this.conversation.getUsers()[0].getId(),
-			"Adding a message..."));
 	}
 
 	public abbreviateUsername(user: User): string {
@@ -54,7 +52,7 @@ export class MessageListComponent {
 		return this.userService.filterCurrentUser(users);
 	}
 
-	public setConversation(conversation: Conversation) {
+	private setConversation(conversation: Conversation) {
 		if (this.interval) {
 			clearInterval(this.interval);
 		}
@@ -63,8 +61,9 @@ export class MessageListComponent {
 		// Electron somehow delays the event loop when not in focus. This delays the angular change watcher
 		//  and can make it take several seconds for a new message to pop up when the app isn't in focus.
 		//  This forces the app to continue running and speeds up changes.
-		this.interval = setInterval(() => {
-			this.conversation.getMessages();
-		}, 100);
+
+		// this.interval = setInterval(() => {
+		// 	this.conversation.getMessages();
+		// }, 100);
 	}
 }

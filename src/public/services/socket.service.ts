@@ -11,10 +11,11 @@ import * as io from 'socket.io-client';
 @Injectable()
 export class SocketService {
 	public conversations: Observable<Conversation>;
-	private conversationSubject: Subject<Conversation>;
 	public messages: Observable<Message>;
-	private messageSubject: Subject<Message>;
 	public users: Observable<User>;
+
+	private conversationSubject: Subject<Conversation>;
+	private messageSubject: Subject<Message>;
 	private userSubject: Subject<User>;
 	private socket: SocketIOClient.Socket;
 

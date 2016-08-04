@@ -1,3 +1,4 @@
+import {ConversationService} from './conversation.service';
 declare var Notification: any;
 
 import { Conversation } from '../../shared/conversation';
@@ -10,24 +11,28 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class NotificationService {
 	private enabled = false;
+	private activeConversation: Conversation;
 
 	constructor(private appContext: AppContextService,
 		private userService: UserService,
+		private conversationService: ConversationService,
 		private socketService: SocketService) {
-			console.log(Notification.permission);
-			if (Notification.permission === "granted") {
-				this.enabled = true;
-			} else if (Notification.permission === "default") {
-				Notification.requestPermission(function (permission) {
-					if (permission === "granted") {
-						this.enabled = true;
-					}
-				});
-			}
+		console.log(Notification.permission);
+		if (Notification.permission === "granted") {
+			this.enabled = true;
+		} else if (Notification.permission === "default") {
+			Notification.requestPermission(function(permission) {
+				if (permission === "granted") {
+					this.enabled = true;
+				}
+			});
+		}
+		appContext.activeConversation.subscribe(conversation => {
+			this.activeConversation = conversation;
+		})
 		socketService.messages.subscribe((message: Message) => {
-			if (!appContext.activeConversation
-				|| message.getConversationId() !== appContext.activeConversation.getId()) {
-				console.log("New message received!");
+			if (!this.activeConversation
+				|| message.getConversationId() !== this.activeConversation.getId()) {
 				this.createNotification(message);
 			}
 		});
@@ -40,10 +45,24 @@ export class NotificationService {
 		let user = this.userService.getUser(message.getUserId());
 		if (user) {
 			let notification = new Notification(`New Message from ${user.getName()}`, {
-				body: message.getMessage()
+				body: message.getMessage(),
+				icon: "images/exclamation.png"
 			});
+			let timeout = setTimeout(() => {
+				if (notification) {
+					notification.close();
+				}
+			}, 5000);
 			notification.onclick = (event) => {
-				alert("notification clicked!");
+				this.conversationService.getConversation(message.getConversationId())
+					.then(convo => {
+						if (convo) {
+							this.appContext.setActiveConversation(convo);
+						}
+						clearTimeout(timeout);
+						notification.close();
+					})
+					.catch(console.log.bind(console));
 			};
 		}
 	}

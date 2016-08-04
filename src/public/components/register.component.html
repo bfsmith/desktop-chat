@@ -1,7 +1,7 @@
 <div class="registration-wrapper">
 	<div class="inputs">
 		<div>
-			<input type="text" placeholder="Name" [(ngModel)]="name" />
+			<input type="text" placeholder="Name" [(ngModel)]="name" (keyup.enter)="register()" />
 		</div>
 		<div>
 			<a class="btn" (click)="register()">Register</a>

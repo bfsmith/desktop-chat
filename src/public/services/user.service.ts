@@ -47,8 +47,8 @@ export class UserService {
 	public getUser(userId: string): User {
 		if (this.appContext.user
 			&& this.appContext.user.getId() === userId) {
-				return this.appContext.user;
-			}
+			return this.appContext.user;
+		}
 
 		return this.users.find(u => u.getId() === userId);
 	}

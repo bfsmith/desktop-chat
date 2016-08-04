@@ -4,7 +4,7 @@ import { AppContextService } from '../services/app-context.service';
 import { ConversationService } from '../services/conversation.service';
 import {UserService} from '../services/user.service';
 import { UserListComponent } from './user-list.component';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
@@ -20,8 +20,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ConversationListComponent implements OnInit {
 	public activeConversation: Conversation;
 	public conversations: Conversation[];
-	@Output()
-	public select = new EventEmitter();
 	public userListVisible: boolean = false;
 
 	constructor(
@@ -30,6 +28,9 @@ export class ConversationListComponent implements OnInit {
 		private userService: UserService,
 		private route: ActivatedRoute,
 		private router: Router) {
+		appContextService.activeConversation.subscribe(conversation => {
+			this.activeConversation = conversation;
+		});
 	}
 
 	public getOtherUsers(conversation: Conversation): User[] {
@@ -67,8 +68,7 @@ export class ConversationListComponent implements OnInit {
 	}
 
 	public gotoConversation(conversation: Conversation): void {
-		this.activeConversation = conversation;
-		this.select.emit(conversation);
+		this.appContextService.setActiveConversation(conversation);
 	}
 
 	public openUserList() {
