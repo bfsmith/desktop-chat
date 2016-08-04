@@ -4,7 +4,13 @@
 			<input type="text" placeholder="Name" [(ngModel)]="name" (keyup.enter)="register()" />
 		</div>
 		<div>
+			<input type="password" placeholder="Password" [(ngModel)]="password" (keyup.enter)="register()" />
+		</div>
+		<div>
 			<a class="btn" (click)="register()">Register</a>
+		</div>
+		<div>
+			{{message}}
 		</div>
 	</div>
 </div>

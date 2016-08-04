@@ -35,23 +35,32 @@ export class SocketService {
 		this.socket = io.connect(this.appContext.ioUrl);
 	}
 
-	public register(name): Promise<User> {
+	public register(name: string, password: string): Promise<User> {
 		return new Promise<User>((resolve, reject) => {
-			this.socket.emit(MessageSubject.REGISTER, { name: name }, (msg: SocketMessage<any>) => {
-				console.log(MessageSubject.REGISTER, msg);
-				// this.appContext.token = msg.token;
-				try {
-					this.appContext.user = User.FROM_POJO(msg.data.user);
-					let users: User[] = msg.data.users.map(u => User.FROM_POJO(u));
+			this.socket.emit(MessageSubject.REGISTER, { name: name, password: password },
+				(msg: SocketMessage<{ user: User, users: User[], conversations: Conversation[] }>) => {
+					console.log(MessageSubject.REGISTER, msg);
 
-					users.forEach(user => this.userSubject.next(user));
-					this.initListeners(this.socket);
-					resolve(this.appContext.user);
-				} catch (err) {
-					reject(err);
-					return;
-				}
-			});
+					if (!msg.success) {
+						reject(msg.error);
+						return;
+					}
+					// this.appContext.token = msg.token;
+					try {
+						this.appContext.user = User.FROM_POJO(msg.data.user);
+						let users: User[] = msg.data.users.map(u => User.FROM_POJO(u));
+						let conversations = msg.data.conversations.map(c => Conversation.FROM_POJO(c));
+
+						users.forEach(user => this.userSubject.next(user));
+						conversations.forEach(convo => this.conversationSubject.next(convo));
+
+						this.initListeners(this.socket);
+						resolve(this.appContext.user);
+					} catch (err) {
+						reject(err);
+						return;
+					}
+				});
 		});
 	}
 

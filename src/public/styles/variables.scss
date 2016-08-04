@@ -9,29 +9,27 @@ $white: #fff;
 
 $primary: #14a;
 $success: #171;
+$warning: #cc0;
 $failure: #911;
 
-@mixin primary {
-	background: $primary;
-	color: $white;
+@mixin make-btn ($bg, $fg) {
+	background: $bg;
+	color: $fg;
 
 	&:hover {
-		background: darken($primary, 5);
+		background: darken($bg, 5);
 	}
+}
+
+@mixin primary {
+	@include make-btn($primary, $white);
 } 
 @mixin success {
-	background: $success;
-	color: $white;
-
-	&:hover {
-		background: darken($success, 5);
-	}
+	@include make-btn($success, $white);
+} 
+@mixin warning {
+	@include make-btn($warning, $white);
 } 
 @mixin failure {
-	background: $failure;
-	color: $white;
-
-	&:hover {
-		background: darken($failure, 5);
-	}
+	@include make-btn($failure, $white);
 } 

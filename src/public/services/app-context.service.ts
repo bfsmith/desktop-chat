@@ -3,6 +3,7 @@ import { User } from '../../shared/user';
 import { GlobalMessage } from '../global-message';
 import { ApplicationRef, Injectable } from '@angular/core';
 import { Observable, Subject } from '@reactivex/rxjs';
+import * as _ from 'lodash';
 
 @Injectable()
 export class AppContextService {
@@ -37,16 +38,16 @@ export class AppContextService {
 
 	public addGlobalMessage(message: GlobalMessage) {
 		this.globalMessages.push(message);
-		if (message.getDuration() > 0 && message.getDuration() < 120) {
+		if (message.getDurationSeconds() > 0 && message.getDurationSeconds() < 120) {
 			setTimeout(() => {
-				let index = this.globalMessages.findIndex(m =>
-					m.getMessage() === message.getMessage()
-					&& m.getSeverity() === message.getSeverity()
-					&& m.getDuration() === message.getDuration());
-				if (index >= 0) {
-					this.globalMessages.splice(index, 1);
-				}
-			}, message.getDuration() * 1000);
+				this.removeGlobalMessage(message);
+			}, message.getDurationSeconds() * 10000);
 		}
+	}
+	public removeGlobalMessage(message: GlobalMessage) {
+		_.remove(this.globalMessages, m =>
+			m.getMessage() === message.getMessage()
+			&& m.getSeverity() === message.getSeverity()
+			&& m.getDurationSeconds() === message.getDurationSeconds());
 	}
 }

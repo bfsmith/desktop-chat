@@ -1,15 +1,22 @@
+export enum Severity {
+	Critical,
+	Warning,
+	Info
+}
+
 export class GlobalMessage {
-	constructor(private severity: string, private message: string,
-		private duration?: number) {
+	constructor(private severity: Severity,
+		private message: string,
+		private seconds?: number) {
 	}
 
-	public getSeverity(): string {
+	public getSeverity(): Severity {
 		return this.severity;
 	}
 	public getMessage(): string {
 		return this.message;
 	}
-	public getDuration(): number {
-		return this.duration;
+	public getDurationSeconds(): number {
+		return this.seconds;
 	}
 }

@@ -1,0 +1,6 @@
+<ul class="messages">
+	<li *ngFor="let message of messages" class="message" [ngClass]="getCssClass(message)">
+		<i class="fa fa-times fa-2x" (click)="close(message)"></i>
+		<div class="content">{{message.getMessage()}}</div>
+	</li>
+</ul>

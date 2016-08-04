@@ -4,7 +4,14 @@ import { MessageSubject } from '../shared/message.subject';
 import { SocketMessage } from '../shared/socket-message';
 import { Status } from '../shared/status';
 import { User } from '../shared/user';
+import * as _ from 'lodash';
 import * as uuid from 'node-uuid';
+
+interface IUserInfo {
+	password: string;
+	user: User;
+	socket: SocketIO.Socket;
+}
 
 /*
 	/
@@ -20,54 +27,87 @@ import * as uuid from 'node-uuid';
 */
 
 export default function(io: SocketIO.Server) {
-	let users: User[] = [];
-	let sockets: { [userid: string]: SocketIO.Socket } = {};
+	let userAuth: {
+		[username: string]: IUserInfo
+	} = {};
+	// let users: User[] = [];
+	// let sockets: { [userid: string]: SocketIO.Socket } = {};
 	// let secureTokens: { [key: string]: string } = {};
 	let conversations: Conversation[] = [];
 
 	io.on(MessageSubject.CONNECT, (socket) => {
 		console.log('Connect', socket.id);
+		let currentUser: User;
 
 		// Done
 		socket.on(MessageSubject.DISCONNECT, () => {
-			const dc = users.find(u => u.getId() === socket.id);
-			if (dc) {
-				dc.setStatus(Status.Offline);
-				if (dc !== undefined) {
+			if (currentUser && currentUser.getStatus() !== Status.Offline) {
+				currentUser.setStatus(Status.Offline);
+				if (currentUser !== undefined) {
 					let userMsg = new SocketMessage<User>();
-					userMsg.data = dc;
+					userMsg.data = currentUser;
 					socket.broadcast.emit(MessageSubject.USER_STATUS, userMsg);
-					console.log('Disconnect', dc);
-					let i = users.findIndex(u => u.getId() === socket.id);
-					users.splice(i, 1);
+					console.log('Disconnect', currentUser);
 				}
 			}
 		});
 
 		// Done
-		socket.on(MessageSubject.REGISTER, (client: { name: string, status?: Status }, response: Function) => {
-			let result = new SocketMessage<{ user: User, users: User[] }>();
-			if (client.name === undefined) {
+		socket.on(MessageSubject.REGISTER, (client: { name: string, password: string, status?: Status }, response: Function) => {
+			let result = new SocketMessage<{ user: User, users: User[], conversations: Conversation[] }>();
+			if (!client.name) {
 				result.success = false;
-				result.error = 'Name is required';
+				result.error = 'name is required';
+				response(result);
+				return;
+			}
+			if (!client.password) {
+				result.success = false;
+				result.error = 'password is required';
+				response(result);
 				return;
 			}
 
-			// socket.id = userid, assign socket to this userid
-			sockets[socket.id] = socket;
+			client.name = client.name.trim();
+			client.password = client.password.trim();
+			if (!isValidLogin(client.name, client.password)) {
+				result.success = false;
+				result.error = 'Invalid login';
+				response(result);
+				return;
+			}
+
+			let authedUser = userAuth[client.name];
+			if (!authedUser) {
+				let aUser = new User(socket.id);
+				aUser.setName(client.name);
+				aUser.setStatus(client.status || Status.Online);
+				authedUser = {
+					user: aUser,
+					password: client.password,
+					socket: socket,
+				};
+				userAuth[client.name] = authedUser;
+			} else {
+				authedUser.socket = socket;
+			}
+			currentUser = authedUser.user;
+			let userConversations: Conversation[] = [];
+			conversations.forEach(convo => {
+				if (convo.getUsers().some(u => u.getId() == currentUser.getId())) {
+					userConversations.push(convo);
+				}
+			});
+			result.data = {
+				user: currentUser,
+				users: _.values(userAuth).map(u => u.user),
+				conversations: userConversations,
+			};
 
 			// Register the user
-			let user = new User(socket.id);
-			user.setName(client.name);
-			user.setStatus(client.status || Status.Online);
-			users.push(user);
-			result.data = {
-				user: user,
-				users: users.filter(u => u.getStatus() !== Status.Offline),
-			};
 			// Tell everyone else the user is online
 			let broadcastMsg = new SocketMessage<User>();
-			broadcastMsg.data = user;
+			broadcastMsg.data = authedUser.user;
 			socket.broadcast.emit(MessageSubject.USER_STATUS, broadcastMsg);
 			// Send the result back to the user
 			response(result);
@@ -76,8 +116,7 @@ export default function(io: SocketIO.Server) {
 		// done
 		socket.on(MessageSubject.START_CONVERSATION, (client: { users: string | string[] }, response: Function) => {
 			let result = new SocketMessage<Conversation>();
-			const user = users.find(u => u.getId() === socket.id);
-			if (!user) {
+			if (!currentUser) {
 				result.success = false;
 				result.error = "Unknown user";
 				response(result);
@@ -85,7 +124,7 @@ export default function(io: SocketIO.Server) {
 			}
 
 			let convoUserIds = Array.isArray(client.users) ? <string[]>client.users : [<string>client.users];
-			convoUserIds.push(user.getId());
+			convoUserIds.push(currentUser.getId());
 
 			// Make sure there's at least 2 users in the convo
 			if (convoUserIds.length < 2) {
@@ -96,9 +135,7 @@ export default function(io: SocketIO.Server) {
 			}
 
 			convoUserIds = convoUserIds.sort();
-			let convoUsers = convoUserIds.map(userId => {
-				return users.find(u => u.getId() === userId);
-			});
+			let convoUsers = convoUserIds.map(userId => getUserByUserId(userId));
 
 			let conversation: Conversation = conversations.find(c => {
 				if (c.getUsers().length !== convoUserIds.length) {
@@ -123,8 +160,8 @@ export default function(io: SocketIO.Server) {
 			response(result);
 
 			// Send all other users in the convo a message about it
-			convoUserIds.filter(userid => userid !== user.getId()).forEach(convoUserId => {
-				let sock = sockets[convoUserId];
+			convoUserIds.filter(userid => userid !== currentUser.getId()).forEach(convoUserId => {
+				let sock = getSocketByUserId(convoUserId);
 				if (sock) {
 					// Create a new one for each user in case we need to pass user specific information later
 					let newConvoMessage = new SocketMessage<Conversation>();
@@ -140,14 +177,15 @@ export default function(io: SocketIO.Server) {
 			try {
 				client.message.createdDate = new Date();
 				let message = Message.FROM_POJO(client.message);
-				let conversation = getConversation(message.getConversationId(), message.getUserId());
+				let conversation = getConversation(message.getConversationId(), currentUser.getId());
 				if (!conversation) {
 					throw new Error('Conversation not found.');
 				}
+				conversation.addMessage(message);
 				conversation.getUsers().forEach(user => {
 					let result = new SocketMessage<Message>();
 					result.data = message;
-					let userSocket = sockets[user.getId()];
+					let userSocket = getSocketByUserId(user.getId());
 					if (userSocket) {
 						userSocket.emit(MessageSubject.MESSAGE, result);
 					}
@@ -172,5 +210,31 @@ export default function(io: SocketIO.Server) {
 			return conversation;
 		}
 		throw new Error('User is not part of the conversation.');
+	}
+
+	function isValidLogin(username: string, password: string) {
+		let user = userAuth[username];
+		if (user) {
+			return user.password === password;
+		}
+		return true;
+	}
+
+	// function getUserBySocketId(socketId: string): User {
+	// 	let o = _.values(userAuth)
+	// 		.find(v => v.socket.id == socketId);
+	// 	return o ? o.user : undefined;
+	// }
+
+	function getUserByUserId(userId: string): User {
+		let o = _.values(userAuth)
+			.find(v => v.user.getId() === userId);
+		return o ? o.user : undefined;
+	}
+
+	function getSocketByUserId(userId: string): SocketIO.Socket {
+		let o = _.values(userAuth)
+			.find(v => v.user.getId() === userId);
+		return o ? o.socket : undefined;
 	}
 }

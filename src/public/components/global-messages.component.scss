@@ -1,0 +1,65 @@
+@import '../styles/variables.scss';
+
+@mixin severity($bg, $fg) {
+	background: $bg;
+	color: $fg;
+
+	i {
+		color: lighten($bg, 10);
+	}
+}
+
+.messages {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+
+	.message {
+		padding: 10px;
+		width: 100%;
+
+		&.critical {
+			@include severity($failure, $white);
+		}
+		&.warning {
+			@include severity($failure, $white);
+		}
+		&.info {
+			@include severity($success, $white);
+		}
+
+		.content {
+			font-size: 14pt;
+		}
+		i {
+			float: right;
+			margin-top: -3px;
+			margin-right: 10px;
+			cursor: pointer;
+		}
+	}
+}
+.conversation-list {
+	float: left;
+  height: 100%;
+	width: 30%;
+	// min-width: 200px;
+	// max-width: 300px;
+	border-right: 1px solid $gray-85;
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.chat-messages {
+  height: 100%;
+	padding-left: 0px;
+	padding-right: 0px;
+	width: 70%;
+	margin-left: 30%;
+	// min-width: 400px;
+	// max-width: calc(100% - 300px);
+}

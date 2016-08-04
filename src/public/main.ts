@@ -1,3 +1,4 @@
+import { GlobalMessagesComponent } from './components/global-messages.component';
 import { APP_ROUTER_PROVIDERS, COMPONENTS } from './routes';
 import { AppContextService } from './services/app-context.service';
 import { ConversationService } from './services/conversation.service';
@@ -14,6 +15,7 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 @Component({
 	directives: [
 		ROUTER_DIRECTIVES,
+		GlobalMessagesComponent
 	],
 	precompile: [
 		COMPONENTS
