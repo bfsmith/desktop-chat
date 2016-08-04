@@ -9,7 +9,7 @@
     "appOutPath": "builds"
   },
   "scripts": {
-    "setup": "npm install -g electron-packager asar typescript tsfmt less concurrently nodemon onchange mocha tsd@next live-reload",
+    "setup": "npm install -g electron-packager asar typescript tsfmt less concurrently nodemon onchange mocha tsd@next live-reload && npm install && tsd reinstall && tsd rebundle",
     "build:ts": "tsfmt -r && tsc --outDir $npm_package_config_outPath/",
     "postbuild:ts": "npm run lint -s",
     "build:css": "node_modules/node-sass/bin/node-sass -r src/ -o src/",
