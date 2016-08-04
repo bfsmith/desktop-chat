@@ -10,6 +10,7 @@
     'angular2-in-memory-web-api': '../../node_modules/angular2-in-memory-web-api',
     // 'lodash':                     'node_modules/lodash',
     'rxjs':                       '../../node_modules/rxjs',
+		'@reactivex/rxjs':            '../../node_modules/@reactivex/rxjs/dist/global/',
     'socket.io-client':           '../../node_modules/socket.io-client'
   };
   // packages tells the System loader how to load when no filename and/or no extension
@@ -17,6 +18,7 @@
     'app':                        { main: 'main.js',  defaultExtension: 'js' },
     // 'lodash':                     { main: 'lodash.min.js', defaultExtension: 'js' },
     'rxjs':                       { main: 'index.js', defaultExtension: 'js' },
+    '@reactivex/rxjs':            { main: 'Rx.umd.min.js', defaultExtension: 'js' },
     'socket.io-client':           { main: 'socket.io.js', defaultExtension: 'js' },
     'angular2-in-memory-web-api': { main: 'index.js', defaultExtension: 'js' },
   };

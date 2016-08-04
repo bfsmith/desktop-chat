@@ -1,6 +1,7 @@
 import { APP_ROUTER_PROVIDERS, COMPONENTS } from './routes';
 import { AppContextService } from './services/app-context.service';
 import { ConversationService } from './services/conversation.service';
+import { NotificationService}  from './services/notification.service';
 import { SocketService } from './services/socket.service';
 import { UserService } from './services/user.service';
 
@@ -24,8 +25,10 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 	templateUrl: 'main.html',
 })
 export class MainComponent {
-	constructor(appContext: AppContextService, router: Router,
-		title: Title) {
+	constructor(appContext: AppContextService,
+		router: Router,
+		title: Title,
+		notifications: NotificationService) {
 		title.setTitle("Desktop Chat");
 		if (appContext.user === undefined) {
 			router.navigate(['/register']);
@@ -38,6 +41,7 @@ bootstrap(MainComponent, [
 	{ provide: LocationStrategy, useClass: HashLocationStrategy },
 	SocketService,
 	AppContextService,
+	NotificationService,
 	UserService,
 	ConversationService,
 	Title

@@ -4,40 +4,34 @@ import { MessageSubject } from '../../shared/message.subject';
 import { SocketMessage } from '../../shared/socket-message';
 import { User } from '../../shared/user';
 import { AppContextService } from '../services/app-context.service';
-import { Injectable, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Injectable } from '@angular/core';
+import { Observable, Subscriber } from '@reactivex/rxjs';
 import * as io from 'socket.io-client';
 
 @Injectable()
-export class SocketService implements OnInit {
-	private userCache: User[] = [];
+export class SocketService {
 	public users: Observable<User>;
 	public messages: Observable<Message>;
 	public conversations: Observable<Conversation>;
 	private socket: SocketIOClient.Socket;
-	private userSub: any;
-	private conversationSub: any;
-	private messageSub: any;
+	private userSubs: Subscriber<User>[] = [];
+	private conversationSubs: Subscriber<Conversation>[] = [];
+	private messageSubs: Subscriber<Message>[] = [];
 
 	constructor(private appContext: AppContextService) {
-		this.users = new Observable<User>(sub => {
-			this.userSub = sub;
-			this.userCache.forEach(u => sub.next(u));
-			this.userCache = undefined;
+		this.users = Observable.create((observer: Subscriber<User>) => {
+			this.userSubs.push(observer);
 		});
-		this.conversations = new Observable<Conversation>(sub => {
-			this.conversationSub = sub;
+		this.conversations = Observable.create((observer: Subscriber<Conversation>) => {
+			this.conversationSubs.push(observer);
 		});
-		this.messages = new Observable<Message>(sub => {
-			this.messageSub = sub;
+		this.messages = Observable.create((observer: Subscriber<Message>) => {
+			this.messageSubs.push(observer);
 		});
 		if ((<any>window).ioUrl) {
 			appContext.ioUrl = (<any>window).ioUrl;
 		}
 		this.socket = io.connect(this.appContext.ioUrl);
-	}
-
-	public ngOnInit() {
 	}
 
 	public register(name): Promise<User> {
@@ -49,14 +43,8 @@ export class SocketService implements OnInit {
 					this.appContext.user = User.FROM_POJO(msg.data.user);
 					let users: User[] = msg.data.users.map(u => User.FROM_POJO(u));
 
-					if (this.userSub) {
-						users.forEach(user => this.userSub.next(user));
-					} else {
-						this.userCache.push(...users);
-					}
-
+					users.forEach(user => this.next(this.userSubs, user));
 					this.initListeners(this.socket);
-
 					resolve(this.appContext.user);
 				} catch (err) {
 					reject(err);
@@ -72,7 +60,7 @@ export class SocketService implements OnInit {
 				console.log(MessageSubject.START_CONVERSATION, 'reply', msg);
 				if (msg.success) {
 					let conversation = Conversation.FROM_POJO(msg.data);
-					this.conversationSub.next(conversation);
+					this.next(this.conversationSubs, conversation);
 					resolve(conversation);
 				} else {
 					reject(msg.error);
@@ -99,9 +87,9 @@ export class SocketService implements OnInit {
 	private initListeners(socket) {
 		// Disconnect
 		socket.on(MessageSubject.DISCONNECT, () => {
-			this.userSub.complete();
-			this.conversationSub.complete();
-			this.messageSub.complete();
+			this.complete(this.userSubs);
+			this.complete(this.conversationSubs);
+			this.complete(this.messageSubs);
 		});
 
 		// Users
@@ -110,7 +98,7 @@ export class SocketService implements OnInit {
 			try {
 				this.validateSecureMessage(msg);
 				let u = User.FROM_POJO(msg.data);
-				this.userSub.next(u);
+				this.next(this.userSubs, u);
 			} catch (error) {
 				console.error(error);
 			}
@@ -122,7 +110,7 @@ export class SocketService implements OnInit {
 			try {
 				this.validateSecureMessage(msg);
 				let c = Conversation.FROM_POJO(msg.data);
-				this.conversationSub.next(c);
+				this.next(this.conversationSubs, c);
 			} catch (error) {
 				console.error(error);
 			}
@@ -134,11 +122,18 @@ export class SocketService implements OnInit {
 			try {
 				this.validateSecureMessage(msg);
 				let u = Message.FROM_POJO(msg.data);
-				this.messageSub.next(u);
+				this.next(this.messageSubs, u);
 			} catch (error) {
 				console.error(error);
 			}
 		});
+	}
+
+	private next<T>(subs: Subscriber<T>[], value: T) {
+		subs.forEach(sub => sub.next(value));
+	}
+	private complete(subs: Subscriber<any>[]) {
+		subs.forEach(sub => sub.complete());
 	}
 
 	private validateSecureMessage(message: SocketMessage<any>) {

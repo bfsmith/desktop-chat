@@ -24,7 +24,7 @@ export class ChatComponent {
 	private messageList: MessageListComponent;
 	public user: User;
 
-	constructor(appContextService: AppContextService,
+	constructor(private appContextService: AppContextService,
 		router: Router,
 		title: Title) {
 		this.user = appContextService.user;
@@ -37,5 +37,6 @@ export class ChatComponent {
 
 	public openConversation(conversation: Conversation) {
 		this.messageList.setConversation(conversation);
+		this.appContextService.activeConversation = conversation;
 	}
 }
