@@ -5,29 +5,20 @@ import { SocketMessage } from '../../shared/socket-message';
 import { User } from '../../shared/user';
 import { AppContextService } from '../services/app-context.service';
 import { Injectable } from '@angular/core';
-import { Observable, Subscriber } from '@reactivex/rxjs';
+import { Observable, Subject, Subscriber } from '@reactivex/rxjs';
 import * as io from 'socket.io-client';
 
 @Injectable()
 export class SocketService {
-	public users: Observable<User>;
-	public messages: Observable<Message>;
-	public conversations: Observable<Conversation>;
+	public users: Subject<User>;
+	public conversations: Subject<Conversation>;
+	public messages: Subject<Message>;
 	private socket: SocketIOClient.Socket;
-	private userSubs: Subscriber<User>[] = [];
-	private conversationSubs: Subscriber<Conversation>[] = [];
-	private messageSubs: Subscriber<Message>[] = [];
 
 	constructor(private appContext: AppContextService) {
-		this.users = Observable.create((observer: Subscriber<User>) => {
-			this.userSubs.push(observer);
-		});
-		this.conversations = Observable.create((observer: Subscriber<Conversation>) => {
-			this.conversationSubs.push(observer);
-		});
-		this.messages = Observable.create((observer: Subscriber<Message>) => {
-			this.messageSubs.push(observer);
-		});
+		this.users = new Subject<User>();
+		this.conversations = new Subject<Conversation>();
+		this.messages = new Subject<Message>();
 		if ((<any>window).ioUrl) {
 			appContext.ioUrl = (<any>window).ioUrl;
 		}
@@ -43,7 +34,7 @@ export class SocketService {
 					this.appContext.user = User.FROM_POJO(msg.data.user);
 					let users: User[] = msg.data.users.map(u => User.FROM_POJO(u));
 
-					users.forEach(user => this.next(this.userSubs, user));
+					users.forEach(user => this.users.next(user));
 					this.initListeners(this.socket);
 					resolve(this.appContext.user);
 				} catch (err) {
@@ -60,7 +51,7 @@ export class SocketService {
 				console.log(MessageSubject.START_CONVERSATION, 'reply', msg);
 				if (msg.success) {
 					let conversation = Conversation.FROM_POJO(msg.data);
-					this.next(this.conversationSubs, conversation);
+					this.conversations.next(conversation);
 					resolve(conversation);
 				} else {
 					reject(msg.error);
@@ -87,9 +78,9 @@ export class SocketService {
 	private initListeners(socket) {
 		// Disconnect
 		socket.on(MessageSubject.DISCONNECT, () => {
-			this.complete(this.userSubs);
-			this.complete(this.conversationSubs);
-			this.complete(this.messageSubs);
+			this.users.complete();
+			this.conversations.complete();
+			this.messages.complete();
 		});
 
 		// Users
@@ -98,7 +89,7 @@ export class SocketService {
 			try {
 				this.validateSecureMessage(msg);
 				let u = User.FROM_POJO(msg.data);
-				this.next(this.userSubs, u);
+				this.users.next(u);
 			} catch (error) {
 				console.error(error);
 			}
@@ -110,7 +101,7 @@ export class SocketService {
 			try {
 				this.validateSecureMessage(msg);
 				let c = Conversation.FROM_POJO(msg.data);
-				this.next(this.conversationSubs, c);
+				this.conversations.next(c);
 			} catch (error) {
 				console.error(error);
 			}
@@ -121,19 +112,12 @@ export class SocketService {
 			console.log(MessageSubject.MESSAGE, msg);
 			try {
 				this.validateSecureMessage(msg);
-				let u = Message.FROM_POJO(msg.data);
-				this.next(this.messageSubs, u);
+				let m = Message.FROM_POJO(msg.data);
+				this.messages.next(m);
 			} catch (error) {
 				console.error(error);
 			}
 		});
-	}
-
-	private next<T>(subs: Subscriber<T>[], value: T) {
-		subs.forEach(sub => sub.next(value));
-	}
-	private complete(subs: Subscriber<any>[]) {
-		subs.forEach(sub => sub.complete());
 	}
 
 	private validateSecureMessage(message: SocketMessage<any>) {
